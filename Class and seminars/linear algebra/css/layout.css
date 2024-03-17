@@ -11,6 +11,13 @@ body{
 	height: 180px;
 	box-sizing: content-box;
 }
+#bg {
+  width: 100%;
+  min-width: 250px;
+  height: 100%;
+  position: fixed;
+  z-index: 1;
+}
 container {
   width: 100%;
   min-width: 250px;
