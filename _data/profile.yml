@@ -1,6 +1,6 @@
-primary_name: "Your Name"
+primary_name: "Ruizhe Li"
 secondary_name: ""
-navbar_name: "Your Name"
+navbar_name: "Ruizhe Li"
 
 positions:
 - logo: /assets/images/badges/MIT_Social_circle.png  # Logo is optional
@@ -8,7 +8,7 @@ positions:
 - name: Position 2 without logo
 
 
-email: "your@email.com"
+email: "12212830@mail.sustech.edu.cn"
 # cv_link: link-to-your-cv-file
 gscholar: your_google_scholar_id
 github: your_github_id
@@ -21,22 +21,22 @@ twitter: your_twitter_id
 
 short_bio: >-
   <p>
-    Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. 
-    Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
+    I'm an student at <a href="https://math.sustech.edu.cn/?lang=en" target="_blank"> Southern University of Science and Technology</a> (SUSTech) in Shenzhen, 
+  China. 
   </p>
   <p>
-    Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. 
+    My research interest is in convex optimization and other related fields.
   </p>
 
 portrait_url: /assets/images/photos/portrait.jpg
 portrait_caption: >-
-  Photo by Manja Vitolic on Unsplash (this caption is optional, comment it out to disable).
+ Here is waht?
 
 education:
-- name: Massachusetts Institute of Technology
+- name: Southern University of Science and Technology
   logo: /assets/images/badges/MIT_Social_circle.png
-  position: Ph.D. Student in Computer Science
-  date: Sep. 2024 - present
+  position: Bachelor in Mathematics
+  date: Sep. 2022 - present
 
 # experience:
 # - name: Peking University
