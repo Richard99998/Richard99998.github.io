@@ -3,9 +3,8 @@ secondary_name: ""
 navbar_name: "Ruizhe Li"
 
 positions:
-- logo: /assets/images/badges/MIT_Social_circle.png  # Logo is optional
-  name: Position 1 with logo
-- name: Position 2 without logo
+- logo: /assets/images/badges/校徽.png  # Logo is optional
+  name:  Southern University of Science and Technology
 
 
 email: "12212830@mail.sustech.edu.cn"
@@ -25,7 +24,7 @@ short_bio: >-
   China. 
   </p>
   <p>
-    My research interest is in convex optimization and other related fields.
+    My research interest is in convex optimization and other related fields. 
   </p>
 
 portrait_url: /assets/images/photos/portrait.jpg
@@ -34,7 +33,7 @@ portrait_caption: >-
 
 education:
 - name: Southern University of Science and Technology
-  logo: /assets/images/badges/MIT_Social_circle.png
+  logo: /assets/images/badges/校徽.png
   position: Bachelor in Mathematics
   date: Sep. 2022 - present
 
