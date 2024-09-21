@@ -4,4 +4,6 @@ pages:
 - name: Publications
   url: /publications
 - name: My notes
-  url: /My notes
+  url: /My notes 
+- name: CV
+  url: /CV
