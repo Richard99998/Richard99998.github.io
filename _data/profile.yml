@@ -24,7 +24,8 @@ short_bio: >-
   China. 
   </p>
   <p>
-    My research interest is in convex optimization and other related fields. 
+    My research interest is in convex optimization,asynchronous optimization and other related fields. Thanks to Xuyang Wu who led me to this field. 
+    
   </p>
 
 portrait_url: /assets/images/photos/portrait.jpg
@@ -45,9 +46,8 @@ education:
 
 
 awards:
-- name: Award Name 2
+- name: Outstanding Student of SUSTECH
   date: 2024
-- name: Outstanding Student of SUSTech
-  date: 2022
-- name: A quick brown fox jumps over the lazy dog and runs away award
-  date: 2021
+- name: Outstanding Student of SUSTECH
+  date: 2023
+
