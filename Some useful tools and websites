@@ -1,0 +1,14 @@
+---
+layout: default
+title : Some useful tools and websites
+navbar_title: Some useful tools and websites
+body_attr: >-
+  data-spy="scroll" data-target="#navbar-year" data-offset="100"
+---
+
+
+Highly Loved:
+<p>
+  <a href="http://faculty.bicmr.pku.edu.cn/~wenzw/optbook.html" target="_blank"> Useful knowledge for Optmization </a>, 
+
+</p>
