@@ -31,10 +31,10 @@ short_bio: >-
     affects the real world as well. And that's the reason why I here.
     
   </p>
-
-portrait_url: /assets/images/photos/Rui_1.jpg
+#/assets/images/photos/Rui_1.jpg
+portrait_url: <img src="/assets/images/photos/Rui_1.jpg" alt="Rui_1" style="width: 400px; height: auto;" />
 portrait_caption: >-
- Here is waht?
+ Ruizhe Li or Richard？
 
 education:
 - name: Southern University of Science and Technology
