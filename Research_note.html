@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>知识关系可视化工具</title>
+    <title>My note</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://d3js.org/d3.v7.min.js"></script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -82,7 +82,7 @@
 <body class="overflow-hidden">
     <div id="background-overlay"></div>
     <div id="toast-container" class="fixed top-5 right-5 z-50 space-y-2"></div>
-    <div class="flex h-screen bg-slate-50/80 backdrop-blur-sm">
+    <div class="flex h-screen bg-transparent backdrop-blur-sm">
         <!-- Left Panel: Categories -->
         <aside class="w-64 bg-white/80 border-r border-slate-200 flex flex-col">
             <div class="px-6 py-4 border-b border-slate-200">
@@ -549,13 +549,30 @@
             function handleWallpaperUpload(event) {
                 const file = event.target.files[0];
                 if (!file) return;
+
+                const maxSize = 5 * 1024 * 1024; // 5MB limit
+                if (file.size > maxSize) {
+                    showToast('图片文件过大，请选择小于5MB的图片。', 'error');
+                    wallpaperFileInput.value = '';
+                    return;
+                }
+                
+                showToast('正在设置壁纸...', 'info');
                 const reader = new FileReader();
                 reader.onload = function(e) {
                     const imageDataUrl = e.target.result;
-                    localStorage.setItem('knowledgeBaseWallpaper', imageDataUrl);
-                    applyWallpaper(imageDataUrl);
-                    showToast('壁纸设置成功！');
+                    try {
+                        localStorage.setItem('knowledgeBaseWallpaper', imageDataUrl);
+                        applyWallpaper(imageDataUrl);
+                        showToast('壁纸设置成功！');
+                    } catch (error) {
+                        console.error('Failed to save wallpaper to localStorage:', error);
+                        showToast('设置壁纸失败，图片可能过大超出浏览器存储限制。', 'error');
+                    }
                 }
+                reader.onerror = function() {
+                    showToast('读取文件失败。', 'error');
+                };
                 reader.readAsDataURL(file);
                 wallpaperFileInput.value = '';
             }
@@ -588,4 +605,3 @@
     </script>
 </body>
 </html>
-
