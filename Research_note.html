@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>My tools for note</title>
+    <title>Note keeper</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://d3js.org/d3.v7.min.js"></script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -21,12 +21,14 @@
             stroke: #475569;
             stroke-width: 1.5px;
         }
-        .graph-node:hover circle {
+        .graph-node:hover circle, .graph-node.selected circle {
             transform: scale(1.1);
+            stroke: #4f46e5;
             stroke-width: 3px;
         }
-        .graph-node:hover text {
+        .graph-node:hover text, .graph-node.selected text {
             font-weight: 600;
+            fill: #4f46e5;
         }
         .graph-link {
             stroke: #94a3b8;
@@ -59,6 +61,11 @@
             <nav id="category-list" class="flex-1 p-4 space-y-2 overflow-y-auto">
                 <!-- Categories will be dynamically inserted here -->
             </nav>
+            <div class="px-4 py-4 border-t border-slate-200 space-y-2">
+                 <button id="export-btn" class="w-full inline-flex justify-center py-2 px-4 border border-slate-300 shadow-sm text-sm font-medium rounded-md text-slate-700 bg-white hover:bg-slate-50 focus:outline-none">导出笔记</button>
+                 <button id="import-btn" class="w-full inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none">导入笔记</button>
+                 <input type="file" id="import-file" class="hidden" accept="application/json">
+            </div>
         </aside>
 
         <!-- Middle Panel: Notes and Editor -->
@@ -150,6 +157,9 @@
             const noteRelationsDiv = document.getElementById('note-relations');
             const graphContainer = document.getElementById('graph-container');
             const tooltip = document.getElementById('tooltip');
+            const exportBtn = document.getElementById('export-btn');
+            const importBtn = document.getElementById('import-btn');
+            const importFileInput = document.getElementById('import-file');
 
             // --- D3 GRAPH SETUP ---
             let simulation, svg;
@@ -196,9 +206,10 @@
             function renderNotes() {
                 const filteredNotes = notes.filter(note => currentCategory === 'all' || note.category === currentCategory);
                 currentCategoryTitle.textContent = currentCategory === 'all' ? '所有笔记' : `类别: ${currentCategory}`;
+                const currentNoteId = noteIdInput.value;
                 
                 noteList.innerHTML = filteredNotes.length ? filteredNotes.map(note => `
-                    <div class="border border-slate-200 p-4 rounded-lg bg-white cursor-pointer hover:shadow-md transition-shadow" data-note-id="${note.id}">
+                    <div class="border p-4 rounded-lg bg-white cursor-pointer hover:shadow-md transition-all ${note.id === currentNoteId ? 'border-indigo-500 shadow-md' : 'border-slate-200'}" data-note-id="${note.id}">
                         <h4 class="font-semibold text-slate-800">${note.title}</h4>
                         <p class="text-sm text-slate-500 mt-1 truncate">${note.content}</p>
                         <div class="mt-3 flex flex-wrap gap-2">
@@ -215,6 +226,7 @@
                 if (!svg) setupGraph();
 
                 const filteredNotes = notes.filter(note => currentCategory !== 'all' && note.category === currentCategory);
+                const currentNoteId = noteIdInput.value;
 
                 if (filteredNotes.length === 0) {
                      svg.selectAll("*").remove();
@@ -231,17 +243,28 @@
                     });
                 });
 
+                svg.selectAll(".graph-link").remove();
                 const link = svg.selectAll(".graph-link")
                     .data(linksData, d => `${d.source.id}-${d.target.id}`)
-                    .join("line")
+                    .enter()
+                    .append("line")
                     .attr("class", "graph-link")
                     .attr("stroke-width", 2);
 
+                svg.selectAll(".graph-node").remove();
                 const node = svg.selectAll(".graph-node")
                     .data(nodesData, d => d.id)
-                    .join("g")
-                    .attr("class", "graph-node")
-                    .call(drag(simulation));
+                    .enter()
+                    .append("g")
+                    .attr("class", d => `graph-node ${d.id === currentNoteId ? 'selected' : ''}`)
+                    .call(drag(simulation))
+                    .on('click', (event, d) => {
+                        const noteToEdit = notes.find(n => n.id === d.id);
+                        if (noteToEdit) {
+                            populateForm(noteToEdit);
+                        }
+                    });
+
 
                 node.append("circle")
                     .attr("r", 10)
@@ -285,10 +308,10 @@
                 formTitle.textContent = '添加新笔记';
                 relationsContainer.classList.add('hidden');
                 noteRelationsDiv.innerHTML = '';
+                renderAll();
             }
 
             function populateForm(note) {
-                clearForm();
                 formTitle.textContent = '编辑笔记: ' + note.title;
                 noteIdInput.value = note.id;
                 noteTitleInput.value = note.title;
@@ -296,6 +319,7 @@
                 noteCategoryInput.value = note.category;
                 noteTagsInput.value = note.tags.join(', ');
                 populateRelations(note);
+                renderAll(); // Re-render to highlight selected note
             }
 
             function populateRelations(note) {
@@ -336,15 +360,19 @@
                 }
                 
                 saveNotes();
+                const justEditedId = id || notes[notes.length - 1].id;
+                const justEditedNote = notes.find(n => n.id === justEditedId);
                 clearForm();
-                renderAll();
+                if (justEditedNote) {
+                    populateForm(justEditedNote);
+                }
             });
 
             categoryList.addEventListener('click', (e) => {
                 if (e.target.tagName === 'A') {
                     e.preventDefault();
                     currentCategory = e.target.dataset.category;
-                    renderAll();
+                    clearForm(); // Also clear selection when changing category
                 }
             });
 
@@ -355,6 +383,7 @@
                 const noteId = card.dataset.noteId;
                 
                 if (e.target.classList.contains('delete-btn')) {
+                    // This is a simple native confirm dialog. For a better UX, a custom modal would be preferable.
                     if (confirm('确定要删除这个笔记吗？')) {
                         notes = notes.filter(n => n.id !== noteId);
                         // Also remove relations pointing to this note
@@ -362,7 +391,7 @@
                             n.relations = n.relations.filter(rId => rId !== noteId);
                         });
                         saveNotes();
-                        renderAll();
+                        clearForm();
                     }
                 } else {
                     const noteToEdit = notes.find(n => n.id === noteId);
@@ -406,6 +435,56 @@
                     .on("drag", dragged)
                     .on("end", dragended);
             }
+
+            // --- IMPORT/EXPORT FUNCTIONS ---
+            function exportNotes() {
+                const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(notes, null, 2));
+                const downloadAnchorNode = document.createElement('a');
+                downloadAnchorNode.setAttribute("href", dataStr);
+                downloadAnchorNode.setAttribute("download", "knowledge-base-backup.json");
+                document.body.appendChild(downloadAnchorNode);
+                downloadAnchorNode.click();
+                downloadAnchorNode.remove();
+            }
+
+            function importNotes(event) {
+                const file = event.target.files[0];
+                if (!file) {
+                    return;
+                }
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    try {
+                        const importedNotes = JSON.parse(e.target.result);
+                        if (Array.isArray(importedNotes)) {
+                            // A simple merge strategy: add new notes, don't overwrite
+                            const existingIds = new Set(notes.map(n => n.id));
+                            let addedCount = 0;
+                            importedNotes.forEach(note => {
+                                if (!existingIds.has(note.id)) {
+                                    notes.push(note);
+                                    addedCount++;
+                                }
+                            });
+                            saveNotes();
+                            renderAll();
+                            alert(`成功导入 ${addedCount} 条新笔记！`);
+                        } else {
+                            throw new Error("Invalid format");
+                        }
+                    } catch (error) {
+                        alert("导入失败：文件格式不正确或已损坏。");
+                    } finally {
+                        // Reset file input to allow importing the same file again
+                        importFileInput.value = '';
+                    }
+                };
+                reader.readAsText(file);
+            }
+
+            exportBtn.addEventListener('click', exportNotes);
+            importBtn.addEventListener('click', () => importFileInput.click());
+            importFileInput.addEventListener('change', importNotes);
 
             // --- INITIALIZATION ---
             renderAll();
