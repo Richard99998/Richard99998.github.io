@@ -29,35 +29,39 @@
             transition: all 0.2s ease-in-out;
         }
         .graph-node circle {
-            stroke: #475569;
+            stroke: #94a3b8; /* Lighter stroke for dark bg */
             stroke-width: 1.5px;
+            fill: rgba(30, 41, 59, 0.5); /* Darker fill */
         }
         .graph-node:hover circle, .graph-node.selected circle {
             transform: scale(1.1);
-            stroke: #4f46e5;
+            stroke: #818cf8;
             stroke-width: 3px;
+        }
+        .graph-node text {
+            fill: #e2e8f0; /* Light text for nodes */
         }
         .graph-node:hover text, .graph-node.selected text {
             font-weight: 600;
-            fill: #4f46e5;
+            fill: #c7d2fe;
         }
         .graph-link {
             stroke: #94a3b8;
-            stroke-opacity: 0.6;
+            stroke-opacity: 0.4;
         }
         /* Custom scrollbar */
         ::-webkit-scrollbar {
             width: 8px;
         }
         ::-webkit-scrollbar-track {
-            background: #f1f5f9;
+            background: rgba(0,0,0,0.1);
         }
         ::-webkit-scrollbar-thumb {
-            background: #cbd5e1;
+            background: rgba(255,255,255,0.2);
             border-radius: 10px;
         }
         ::-webkit-scrollbar-thumb:hover {
-            background: #94a3b8;
+            background: rgba(255,255,255,0.4);
         }
         /* Toast Notifications */
         .toast {
@@ -79,7 +83,7 @@
         .toast.error { background-color: #ef4444; }
         
         .panel-toggle-btn {
-            position: absolute;
+            position: fixed; /* Changed to fixed for viewport relativity */
             top: 50%;
             transform: translateY(-50%);
             z-index: 20;
@@ -87,7 +91,6 @@
             width: 20px;
             background-color: rgba(255, 255, 255, 0.8);
             border: 1px solid #e2e8f0;
-            border-radius: 0 6px 6px 0;
             cursor: pointer;
             display: flex;
             align-items: center;
@@ -98,10 +101,11 @@
             background-color: white;
         }
         #toggle-left-panel {
-            left: 0;
+            left: 256px; /* Start open */
+            border-radius: 0 6px 6px 0;
         }
         #toggle-right-panel {
-            right: 0;
+            right: 33.333333%; /* Start open */
             border-radius: 6px 0 0 6px;
         }
         .panel-toggle-btn svg {
@@ -109,19 +113,19 @@
         }
     </style>
 </head>
-<body class="overflow-hidden">
+<body class="overflow-hidden text-slate-200"> <!-- Default text color changed for dark mode/wallpaper -->
     <div id="background-overlay"></div>
     <div id="toast-container" class="fixed top-5 right-5 z-50 space-y-2"></div>
-    <div class="relative flex h-screen bg-transparent backdrop-blur-sm">
+    <div class="relative flex h-screen bg-black/20 backdrop-blur-md">
         <!-- Left Panel: Categories -->
-        <aside id="left-panel" class="w-64 bg-transparent border-r border-slate-200/50 flex flex-col transition-all duration-300 ease-in-out">
-            <div class="px-6 py-4 border-b border-slate-200/50">
-                <h1 class="text-xl font-bold text-slate-800">知识类别</h1>
+        <aside id="left-panel" class="w-64 bg-transparent border-r border-slate-200/20 flex flex-col transition-all duration-300 ease-in-out overflow-hidden">
+            <div class="px-6 py-4 border-b border-slate-200/20">
+                <h1 class="text-xl font-bold text-slate-100">知识类别</h1>
             </div>
             <nav id="category-list" class="flex-1 p-4 space-y-2 overflow-y-auto">
                 <!-- Categories will be dynamically inserted here -->
             </nav>
-            <div class="px-4 py-4 border-t border-slate-200/50 space-y-2">
+            <div class="px-4 py-4 border-t border-slate-200/20 space-y-2">
                  <button id="export-btn" class="w-full inline-flex justify-center py-2 px-4 border border-slate-300 shadow-sm text-sm font-medium rounded-md text-slate-700 bg-white hover:bg-slate-50 focus:outline-none">导出笔记</button>
                  <button id="import-btn" class="w-full inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none">导入笔记</button>
                  <input type="file" id="import-file" class="hidden" accept="application/json">
@@ -133,53 +137,42 @@
 
         <!-- Middle Panel: Notes and Editor -->
         <main class="flex-1 flex flex-col bg-transparent relative">
-             <button id="toggle-left-panel" class="panel-toggle-btn">
-                <svg class="h-4 w-4 text-slate-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
-                </svg>
-            </button>
-             <button id="toggle-right-panel" class="panel-toggle-btn">
-                <svg class="h-4 w-4 text-slate-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
-                </svg>
-            </button>
-
-            <div class="px-8 py-4 border-b border-slate-200/50 bg-white/80">
-                 <h2 id="current-category-title" class="text-2xl font-bold text-slate-800">所有笔记</h2>
+            <div class="px-8 py-4 border-b border-slate-200/20">
+                 <h2 id="current-category-title" class="text-2xl font-bold text-slate-100">所有笔记</h2>
             </div>
             <div class="flex-1 flex overflow-hidden">
                 <!-- Notes List -->
-                <div class="w-1/3 border-r border-slate-200/50 overflow-y-auto p-6 bg-white/80">
-                    <h3 class="text-lg font-semibold mb-4 text-slate-700">笔记列表</h3>
+                <div class="w-1/3 border-r border-slate-200/20 overflow-y-auto p-6">
+                    <h3 class="text-lg font-semibold mb-4 text-slate-200">笔记列表</h3>
                     <div id="note-list" class="space-y-4">
                         <!-- Note cards will be dynamically inserted here -->
                     </div>
                 </div>
                 <!-- Note Editor -->
                 <div class="w-2/3 overflow-y-auto p-8">
-                    <div class="bg-white/90 p-6 rounded-lg shadow-sm border border-slate-200">
-                        <h3 id="form-title" class="text-lg font-semibold mb-4 text-slate-700">添加新笔记</h3>
+                    <div class="bg-transparent p-6 rounded-lg border border-slate-200/20">
+                        <h3 id="form-title" class="text-lg font-semibold mb-4 text-slate-200">添加新笔记</h3>
                         <form id="note-form" class="space-y-4">
                             <input type="hidden" id="note-id">
                             <div>
-                                <label for="note-title" class="block text-sm font-medium text-slate-600">标题</label>
-                                <input type="text" id="note-title" required class="mt-1 block w-full px-3 py-2 bg-white border border-slate-300 rounded-md text-sm shadow-sm placeholder-slate-400 focus:outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500">
+                                <label for="note-title" class="block text-sm font-medium text-slate-300">标题</label>
+                                <input type="text" id="note-title" required class="mt-1 block w-full px-3 py-2 bg-slate-800/50 border border-slate-200/20 rounded-md text-sm text-slate-100 shadow-sm placeholder-slate-400 focus:outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500">
                             </div>
                             <div>
-                                <label for="note-content" class="block text-sm font-medium text-slate-600">内容</label>
-                                <textarea id="note-content" rows="4" class="mt-1 block w-full px-3 py-2 bg-white border border-slate-300 rounded-md text-sm shadow-sm placeholder-slate-400 focus:outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500"></textarea>
+                                <label for="note-content" class="block text-sm font-medium text-slate-300">内容</label>
+                                <textarea id="note-content" rows="4" class="mt-1 block w-full px-3 py-2 bg-slate-800/50 border border-slate-200/20 rounded-md text-sm text-slate-100 shadow-sm placeholder-slate-400 focus:outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500"></textarea>
                             </div>
                             <div>
-                                <label for="note-category" class="block text-sm font-medium text-slate-600">类别</label>
-                                <input type="text" id="note-category" required placeholder="例如: 编程, 历史" class="mt-1 block w-full px-3 py-2 bg-white border border-slate-300 rounded-md text-sm shadow-sm placeholder-slate-400 focus:outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500">
+                                <label for="note-category" class="block text-sm font-medium text-slate-300">类别</label>
+                                <input type="text" id="note-category" required placeholder="例如: 编程, 历史" class="mt-1 block w-full px-3 py-2 bg-slate-800/50 border border-slate-200/20 rounded-md text-sm text-slate-100 shadow-sm placeholder-slate-400 focus:outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500">
                             </div>
                             <div>
-                                <label for="note-tags" class="block text-sm font-medium text-slate-600">标签 (用逗号分隔)</label>
-                                <input type="text" id="note-tags" placeholder="例如: javascript, web开发" class="mt-1 block w-full px-3 py-2 bg-white border border-slate-300 rounded-md text-sm shadow-sm placeholder-slate-400 focus:outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500">
+                                <label for="note-tags" class="block text-sm font-medium text-slate-300">标签 (用逗号分隔)</label>
+                                <input type="text" id="note-tags" placeholder="例如: javascript, web开发" class="mt-1 block w-full px-3 py-2 bg-slate-800/50 border border-slate-200/20 rounded-md text-sm text-slate-100 shadow-sm placeholder-slate-400 focus:outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500">
                             </div>
                             <div id="relations-container" class="hidden">
-                                <label class="block text-sm font-medium text-slate-600">关联笔记</label>
-                                <div id="note-relations" class="mt-2 p-3 border border-slate-200 rounded-md max-h-32 overflow-y-auto space-y-2">
+                                <label class="block text-sm font-medium text-slate-300">关联笔记</label>
+                                <div id="note-relations" class="mt-2 p-3 border border-slate-200/20 rounded-md max-h-32 overflow-y-auto space-y-2">
                                     <!-- Checkboxes for relations will be dynamically inserted here -->
                                 </div>
                             </div>
@@ -194,14 +187,26 @@
         </main>
 
         <!-- Right Panel: Graph Visualization -->
-        <aside id="right-panel" class="w-1/3 bg-transparent border-l border-slate-200/50 flex flex-col transition-all duration-300 ease-in-out">
-            <div class="px-6 py-4 border-b border-slate-200/50">
-                <h2 class="text-xl font-bold text-slate-800">关系预览</h2>
+        <aside id="right-panel" class="w-1/3 bg-transparent border-l border-slate-200/20 flex flex-col transition-all duration-300 ease-in-out overflow-hidden">
+            <div class="px-6 py-4 border-b border-slate-200/20">
+                <h2 class="text-xl font-bold text-slate-100">关系预览</h2>
             </div>
             <div id="graph-container" class="flex-1 relative">
                 <div id="tooltip" class="absolute bg-slate-800 text-white text-xs rounded py-1 px-2 pointer-events-none opacity-0 transition-opacity"></div>
             </div>
         </aside>
+
+        <!-- Toggle Buttons -->
+        <button id="toggle-left-panel" class="panel-toggle-btn">
+            <svg class="h-4 w-4 text-slate-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
+            </svg>
+        </button>
+        <button id="toggle-right-panel" class="panel-toggle-btn">
+            <svg class="h-4 w-4 text-slate-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+            </svg>
+        </button>
     </div>
 
     <script>
@@ -220,6 +225,7 @@
             const rightPanel = document.getElementById('right-panel');
             const toggleLeftPanelBtn = document.getElementById('toggle-left-panel');
             const toggleRightPanelBtn = document.getElementById('toggle-right-panel');
+            // ... (rest of DOM element selectors are the same)
             const backgroundOverlay = document.getElementById('background-overlay');
             const categoryList = document.getElementById('category-list');
             const noteList = document.getElementById('note-list');
@@ -242,6 +248,7 @@
             const wallpaperBtn = document.getElementById('wallpaper-btn');
             const wallpaperFileInput = document.getElementById('wallpaper-file');
             const removeWallpaperBtn = document.getElementById('remove-wallpaper-btn');
+
 
             // --- UTILITY FUNCTIONS ---
             function showToast(message, type = 'success') {
@@ -302,7 +309,7 @@
             function renderCategories() {
                 const categories = ['all', ...new Set(notes.map(note => note.category))];
                 categoryList.innerHTML = categories.map(cat => `
-                    <a href="#" class="block px-4 py-2 text-sm font-medium rounded-md ${currentCategory === cat ? 'bg-indigo-50 text-indigo-700' : 'text-slate-600 hover:bg-slate-100'}" data-category="${cat}">
+                    <a href="#" class="block px-4 py-2 text-sm font-medium rounded-md ${currentCategory === cat ? 'bg-indigo-500/50 text-white' : 'text-slate-300 hover:bg-white/10'}" data-category="${cat}">
                         ${cat === 'all' ? '所有类别' : cat}
                     </a>
                 `).join('');
@@ -314,17 +321,17 @@
                 const currentNoteId = noteIdInput.value;
                 
                 noteList.innerHTML = filteredNotes.length ? filteredNotes.map(note => `
-                    <div class="border p-4 rounded-lg bg-white/90 cursor-pointer hover:shadow-md transition-all ${note.id === currentNoteId ? 'border-indigo-500 shadow-md' : 'border-slate-200'}" data-note-id="${note.id}">
-                        <h4 class="font-semibold text-slate-800">${note.title}</h4>
-                        <p class="text-sm text-slate-500 mt-1 truncate">${note.content}</p>
+                    <div class="border p-4 rounded-lg bg-transparent cursor-pointer hover:bg-white/10 transition-all ${note.id === currentNoteId ? 'border-indigo-400' : 'border-slate-200/20'}" data-note-id="${note.id}">
+                        <h4 class="font-semibold text-slate-100">${note.title}</h4>
+                        <p class="text-sm text-slate-400 mt-1 truncate">${note.content}</p>
                         <div class="mt-3 flex flex-wrap gap-2">
-                            ${note.tags.map(tag => `<span class="bg-slate-100 text-slate-600 text-xs font-medium px-2 py-1 rounded-full">${tag}</span>`).join('')}
+                            ${note.tags.map(tag => `<span class="bg-slate-700 text-slate-300 text-xs font-medium px-2 py-1 rounded-full">${tag}</span>`).join('')}
                         </div>
                          <div class="mt-3 text-right">
-                             <button class="delete-btn text-xs text-red-500 hover:text-red-700" data-note-id="${note.id}">删除</button>
+                             <button class="delete-btn text-xs text-red-400 hover:text-red-300" data-note-id="${note.id}">删除</button>
                          </div>
                     </div>
-                `).join('') : '<p class="text-sm text-slate-500">没有找到笔记。</p>';
+                `).join('') : '<p class="text-sm text-slate-400">没有找到笔记。</p>';
             }
 
             function updateGraph() {
@@ -354,7 +361,7 @@
                     .enter()
                     .append("line")
                     .attr("class", "graph-link")
-                    .attr("stroke-width", 2);
+                    .attr("stroke-width", 1.5);
 
                 svg.selectAll(".graph-node").remove();
                 const node = svg.selectAll(".graph-node")
@@ -370,20 +377,17 @@
                         }
                     });
 
-
                 node.append("circle")
-                    .attr("r", 10)
-                    .attr("fill", "#fff");
+                    .attr("r", 10);
 
                 node.append("text")
                     .text(d => d.title)
                     .attr("x", 15)
-                    .attr("y", 5)
-                    .attr("fill", "#334155");
+                    .attr("y", 5);
 
                 node.on('mouseover', (event, d) => {
                     tooltip.style('opacity', 1)
-                           .html(`<b>${d.title}</b><br><small>${d.tags.join(', ')}</small>`)
+                           .html(`<b class="text-white">${d.title}</b><br><small class="text-slate-300">${d.tags.join(', ')}</small>`)
                            .style('left', (event.pageX + 10) + 'px')
                            .style('top', (event.pageY - 28) + 'px');
                 }).on('mouseout', () => {
@@ -400,7 +404,6 @@
                         .attr("y1", d => d.source.y)
                         .attr("x2", d => d.target.x)
                         .attr("y2", d => d.target.y);
-
                     node
                         .attr("transform", d => `translate(${d.x}, ${d.y})`);
                 });
@@ -433,8 +436,8 @@
                 const possibleRelations = notes.filter(n => n.category === note.category && n.id !== note.id);
                 if (possibleRelations.length > 0) {
                     noteRelationsDiv.innerHTML = possibleRelations.map(n => `
-                        <label class="flex items-center space-x-2 text-sm">
-                            <input type="checkbox" value="${n.id}" class="relation-checkbox rounded" ${note.relations.includes(n.id) ? 'checked' : ''}>
+                        <label class="flex items-center space-x-2 text-sm text-slate-300">
+                            <input type="checkbox" value="${n.id}" class="relation-checkbox rounded bg-slate-700 border-slate-500 text-indigo-500 focus:ring-indigo-500" ${note.relations.includes(n.id) ? 'checked' : ''}>
                             <span>${n.title}</span>
                         </label>
                     `).join('');
@@ -457,12 +460,12 @@
                     relations: relations
                 };
 
-                if (id) { // Update existing note
+                if (id) {
                     const index = notes.findIndex(note => note.id === id);
                     if (index > -1) {
                         notes[index] = { ...notes[index], ...noteData };
                     }
-                } else { // Add new note
+                } else {
                     notes.push({ id: Date.now().toString(), ...noteData });
                 }
                 
@@ -631,28 +634,28 @@
             
             // --- PANEL TOGGLE ---
             toggleLeftPanelBtn.addEventListener('click', () => {
-                leftPanel.classList.toggle('w-64');
-                leftPanel.classList.toggle('w-0');
-                leftPanel.classList.toggle('p-4');
-                leftPanel.classList.toggle('p-0');
-                const svg = toggleLeftPanelBtn.querySelector('svg');
-                svg.style.transform = leftPanel.classList.contains('w-0') ? 'rotate(180deg)' : 'rotate(0deg)';
-                toggleLeftPanelBtn.style.left = leftPanel.classList.contains('w-0') ? '0px' : '256px';
+                const isCurrentlyCollapsed = leftPanel.classList.contains('w-0');
+                leftPanel.classList.toggle('w-64', isCurrentlyCollapsed);
+                leftPanel.classList.toggle('w-0', !isCurrentlyCollapsed);
 
+                const svg = toggleLeftPanelBtn.querySelector('svg');
+                svg.style.transform = isCurrentlyCollapsed ? 'rotate(0deg)' : 'rotate(180deg)';
+                toggleLeftPanelBtn.style.left = isCurrentlyCollapsed ? '256px' : '0px';
             });
 
             toggleRightPanelBtn.addEventListener('click', () => {
-                rightPanel.classList.toggle('w-1/3');
-                rightPanel.classList.toggle('w-0');
-                const svg = toggleRightPanelBtn.querySelector('svg');
-                svg.style.transform = rightPanel.classList.contains('w-0') ? 'rotate(180deg)' : 'rotate(0deg)';
-                toggleRightPanelBtn.style.right = rightPanel.classList.contains('w-0') ? '0px' : 'calc(33.333% - 20px)';
+                const isCurrentlyCollapsed = rightPanel.classList.contains('w-0');
+                rightPanel.classList.toggle('w-1/3', isCurrentlyCollapsed);
+                rightPanel.classList.toggle('w-0', !isCurrentlyCollapsed);
                 
-                // Redraw graph after transition
+                const svg = toggleRightPanelBtn.querySelector('svg');
+                svg.style.transform = isCurrentlyCollapsed ? 'rotate(0deg)' : 'rotate(180deg)';
+                toggleRightPanelBtn.style.right = isCurrentlyCollapsed ? '33.333333%' : '0px';
+                
                 setTimeout(() => {
                     setupGraph();
                     updateGraph();
-                }, 300); // Should match transition duration
+                }, 300);
             });
 
             wallpaperBtn.addEventListener('click', () => wallpaperFileInput.click());
@@ -676,5 +679,3 @@
         });
     </script>
 </body>
-</html>
-
