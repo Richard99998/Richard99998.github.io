@@ -59,3 +59,9 @@ img.lazy {
     font-family: Courier, monospace;
 }
 
+.pub-cover-img {
+  width: 100%;       /* 宽度充满容器 */
+  height: 150px;     /* 您可以根据喜好调整这个高度 */
+  object-fit: cover; /* 这是关键！图片会覆盖整个区域，保持比例，多余部分被裁剪 */
+  object-position: center; /* 裁剪时以图片中心为准 */
+}
