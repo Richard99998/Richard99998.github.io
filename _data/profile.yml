@@ -20,18 +20,29 @@ twitter: your_twitter_id
 
 short_bio: >-
   <p>
-    I'm an student at <a href="https://math.sustech.edu.cn/?lang=en" target="_blank"> Southern University of Science and Technology</a> (SUSTech) in Shenzhen, 
-  China. And I'm a member of Fields Honor class which is an elite program for mathematic undergraduates.
-  </p>
-  <p>
-    My research interest is in optimization, numerical methods and other related fields. 
-    
-    Before I get involved in this area, I'm studying finite group theory, it's quite hard but intersting. And I had a good time during that period.
-    But then in the end of my sophomore year, I find that applied mathematics is more attractive for me. Besides enjoying the happiness brought by proving step by step, I can see how it
-    affects the real world as well. And that's the reason why I here. I'm very proud to work with <a href="https://emliang.github.io/" target="_blank">Enming Liang</a> and be supervised by <a href="https://www.mhchen.com/index.html" target="_blank">
-    Minghua Chen</a>
-    . 
-  </p>
+  I am a final-year undergraduate student at 
+  <a href="https://math.sustech.edu.cn/?lang=en" target="_blank" rel="noopener noreferrer">Southern University of Science and Technology</a> (SUSTech) in Shenzhen, China. 
+  I am also a member of the Fields Honor Class, an elite program for mathematics undergraduates.
+</p>
+
+<p>
+  My research interests lie at the intersection of optimization, graph learning, and machine learning, with a particular focus on theoretical foundations. To be precise, I am interested in the following problems:
+</p>
+
+<!-- 使用有序列表 (Ordered List) 展示问题，更加清晰 -->
+<ol style="margin-bottom: 1em;">
+  <li>
+    How can the inductive bias of optimization problems be leveraged to design learning-based architectures that achieve <em>both universality and efficiency (in terms of training and generalization)</em>?
+  </li>
+  <li>
+    How can we design computationally efficient methods that guarantee solution feasibility, even in non-convex settings?
+  </li>
+</ol>
+
+<p>
+  I am very fortunate to work with <a href="https://emliang.github.io/" target="_blank" rel="noopener noreferrer">Enming Liang</a> and be supervised by 
+  <a href="https://www.mhchen.com/index.html" target="_blank" rel="noopener noreferrer">Minghua Chen</a>.
+</p>
 portrait_url: /assets/images/photos/Rui_1.jpg
 portrait_caption: >-
  Ruizhe Li or Richard？
