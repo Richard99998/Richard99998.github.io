@@ -36,6 +36,9 @@ short_bio: >-
     <li>
       How can we design computationally efficient methods that guarantee solution feasibility, even in non-convex settings?
     </li>
+    <li>
+      How can we design interpretable methods for learning to optimize that extend beyond deep unrolling?
+    </li>
   </ol>
   
   <p>
