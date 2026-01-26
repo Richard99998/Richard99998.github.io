@@ -6,7 +6,7 @@ pub:            "ICLR"
 # pub_pre:        "Submitted to "
 # pub_post:       'Under review.'
 pub_last:       ' <span class="badge badge-pill badge-publication badge-success">To appear</span>'
-pub_date:       "2026"
+pub_date:       "2026 (Short version:2025 NeurIPS Workshop on GPU-Accelerated and Scalable Optimization)"
 
 abstract: >-
   Graph Neural Networks (GNNs) have demonstrated both empirical efficiency and universal expressivity for solving constrained optimization problems such as linear and quadratic programming. 
