@@ -1,16 +1,25 @@
 ---
-title:          "On the Expressivity of GNN for Solving Second Order Cone Programming"
-date:           2025-09-22 00:00:00 +0800
+title:          "On the Universality and Complexity of GNN for Solving Second-order Cone Programs"
+date:           2026-01-26 00:00:00 +0800
 selected:       true
-pub:            "NeurIPS Workshop on GPU-Accelerated and Scalable Optimization"
+pub:            "ICLR 2026"
 # pub_pre:        "Submitted to "
 # pub_post:       'Under review.'
 pub_last:       ' <span class="badge badge-pill badge-publication badge-success">To appear</span>'
-pub_date:       "2025"
+pub_date:       "2026"
 
 abstract: >-
-  Graph Neural Networks (GNNs) have demonstrated both empirical efficiency and universal expressivity for solving constrained optimization problems such as linear and quadratic programming. However, extending this paradigm to more general convex problems with universality guarantees, particularly Second-Order Cone Programs (SOCPs), remains largely unexplored. We address this challenge by proposing a novel graph representation that captures the structure of conic constraints. We then establish a key universality theorem: *there exist GNNs that can provably approximate essential SOCP properties, such as instance feasibility and optimal solutions*. This work provides a rigorous foundation linking GNN expressive power to conic optimization structure, opening new avenues for scalable, data-driven SOCP solvers. Our approach extends to $p$-order cone programming for any $p \geq 1$ with universal expressivity preserved, requiring no GNN structural modifications. Numerical experiments on randomly generated SOCPs demonstrate the expressivity of the proposed GNN, which achieves better prediction accuracy with fewer parameters than fully connected neural networks.
-#cover:          /assets/images/covers/nips_workshop_2025.png
+  Graph Neural Networks (GNNs) have demonstrated both empirical efficiency and universal expressivity for solving constrained optimization problems such as linear and quadratic programming. 
+  However, extending this paradigm to more general convex problems with universality guarantees, particularly Second-Order Cone Programs (SOCPs), remains largely unexplored. 
+  We address this challenge by proposing a novel graph representation that captures the inherent structure of conic constraints. We then establish a key universality theorem: 
+  there exist GNNs that can provably approximate essential SOCP properties, including instance feasibility and optimal solutions. We further derive the sample complexity for GNN generalization 
+  based on Rademacher complexity, filling an important gap for Weisfeiler-Lehman-based GNNs in learning-to-optimize paradigms. Our results provide a rigorous foundation linking GNN expressivity and 
+  generalization power to conic optimization structure, opening new avenues for scalable, data-driven SOCP solvers. The approach extends naturally to 
+  <i>p</i>-order cone programming for any <i>p</i> &ge; 1 
+  while preserving universal expressivity and requiring no structural modifications to the GNN architecture. 
+  Numerical experiments on randomly generated SOCPs and real-world power grid problems demonstrate the effectiveness of our approach, 
+  achieving superior prediction accuracy with significantly fewer parameters than fully connected neural networks.
+cover:          /assets/images/covers/nips_workshop_2025.png
 authors:
   - Ruizhe Li
   - Enming Liang#
