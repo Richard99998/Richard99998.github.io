@@ -1,0 +1,98 @@
+{
+  "categories": {
+    "optimization": {
+      "label": "Optimization",
+      "description": "对偶性、KKT、凸优化与常用算法笔记。",
+      "emoji": "⚡"
+    },
+    "pde": {
+      "label": "PDE",
+      "description": "偏微分方程与数值 PDE 复习与推导。",
+      "emoji": "🌊"
+    },
+    "ode": {
+      "label": "ODE",
+      "description": "常微分方程、稳定性、Lyapunov 等。",
+      "emoji": "⏱️"
+    },
+    "others": {
+      "label": "Others",
+      "description": "其他有趣主题、随手记、研讨班资料等。",
+      "emoji": "🧩"
+    }
+  },
+  "notes": [
+    {
+      "id": "opt-farkas-duality",
+      "title": "LP Strong Duality via Farkas Lemma",
+      "category": "optimization",
+      "date": "2025-12-12",
+      "tags": ["LP", "duality", "Farkas"],
+      "venue": "Optimization note",
+      "abstract": "用 Farkas 引理给出线性规划强对偶的一个常见证明框架，并记录证明中容易遗漏的可行性条件。",
+      "pdf": "/assets/notes/pdfs/lp-strong-duality-farkas.pdf",
+      "thumbnail": "/assets/notes/thumbs/opt-farkas-duality.png",
+      "highlights": []
+    },
+    {
+      "id": "opt-slater-kkt",
+      "title": "Slater Condition and KKT Cheatsheet",
+      "category": "optimization",
+      "date": "2025-12-18",
+      "tags": ["convex", "Slater", "KKT"],
+      "venue": "Optimization note",
+      "abstract": "整理 Slater 条件、强对偶成立条件，并把 KKT 的常用形式与几类典型约束写成可快速复用的模板。",
+      "pdf": "/assets/notes/pdfs/slater-kkt-cheatsheet.pdf",
+      "thumbnail": "/assets/notes/thumbs/opt-slater-kkt.png",
+      "highlights": ["Spotlight"]
+    },
+    {
+      "id": "pde-heat-review",
+      "title": "Heat Equation Review",
+      "category": "pde",
+      "date": "2025-11-01",
+      "tags": ["heat", "energy method", "finite difference"],
+      "venue": "PDE note",
+      "abstract": "热方程基本解、能量估计与简单差分格式的稳定性要点。",
+      "pdf": "/assets/notes/pdfs/heat-equation-review.pdf",
+      "thumbnail": "/assets/notes/thumbs/pde-heat-review.png",
+      "highlights": []
+    },
+    {
+      "id": "pde-poisson-laplace",
+      "title": "Poisson and Laplace Equation Review",
+      "category": "pde",
+      "date": "2025-11-15",
+      "tags": ["Poisson", "Laplace", "Green"],
+      "venue": "PDE note",
+      "abstract": "Poisson/Laplace 的基本定理、Green 恒等式与边值问题的典型处理方式。",
+      "pdf": "/assets/notes/pdfs/poisson-laplace-review.pdf",
+      "thumbnail": "/assets/notes/thumbs/pde-poisson-laplace.png",
+      "highlights": ["Outstanding"]
+    },
+    {
+      "id": "ode-lyapunov-stability",
+      "title": "ODE Stability: Lyapunov Methods",
+      "category": "ode",
+      "date": "2026-01-02",
+      "tags": ["Lyapunov", "stability", "ODE"],
+      "venue": "ODE note",
+      "abstract": "Lyapunov 函数法的定义、典型构造思路与常见反例提醒。",
+      "pdf": "/assets/notes/pdfs/ode-lyapunov-stability.pdf",
+      "thumbnail": "/assets/notes/thumbs/ode-lyapunov-stability.png",
+      "highlights": []
+    },
+    {
+      "id": "others-coupon-problem",
+      "title": "Simple Coupon Problem",
+      "category": "others",
+      "date": "2026-01-10",
+      "tags": ["probability", "expectation"],
+      "venue": "Misc note",
+      "abstract": "Coupon collector 的基本期望推导与几个常见变体的快速结论。",
+      "pdf": "/assets/notes/pdfs/simple-coupon-problem.pdf",
+      "thumbnail": "/assets/notes/thumbs/others-coupon-problem.png",
+      "highlights": []
+    }
+  ]
+}
