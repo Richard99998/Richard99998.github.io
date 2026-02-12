@@ -1,0 +1,242 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Notes · Category</title>
+
+  <meta name="baseurl" content="" />
+
+  <script>
+    (function () {
+      try {
+        const stored = localStorage.getItem('theme');
+        const prefersDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+        const useDark = stored === 'dark' || (!stored && prefersDark);
+        if (useDark) document.documentElement.classList.add('dark');
+      } catch (e) {}
+    })();
+  </script>
+
+  <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+
+  <style type="text/tailwindcss">
+    @custom-variant dark (&:where(.dark, .dark *));
+    @layer base { [x-cloak] { display: none !important; } }
+    @layer utilities {
+      .line-clamp-2 { overflow:hidden; display:-webkit-box; -webkit-box-orient:vertical; -webkit-line-clamp:2; }
+      .line-clamp-3 { overflow:hidden; display:-webkit-box; -webkit-box-orient:vertical; -webkit-line-clamp:3; }
+    }
+    @layer components {
+      .card { @apply rounded-2xl bg-white dark:bg-slate-900 ring-1 ring-slate-200/70 dark:ring-slate-800 shadow-sm; }
+      .card-hover { @apply transition hover:shadow-md hover:-translate-y-0.5; }
+      .btn { @apply inline-flex items-center justify-center gap-2 rounded-lg px-3 py-2 text-sm font-medium ring-1 ring-slate-200/80 dark:ring-slate-700 bg-white dark:bg-slate-900 hover:bg-slate-50 dark:hover:bg-slate-800 focus:outline-none focus:ring-2 focus:ring-indigo-500/40; }
+      .btn-primary { @apply bg-slate-900 text-white ring-slate-900 hover:bg-slate-800 dark:bg-white dark:text-slate-900 dark:ring-white; }
+      .input { @apply w-full rounded-lg bg-white dark:bg-slate-900 ring-1 ring-slate-200/80 dark:ring-slate-700 px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-indigo-500/40; }
+      .select { @apply w-full rounded-lg bg-white dark:bg-slate-900 ring-1 ring-slate-200/80 dark:ring-slate-700 px-3 py-2 text-sm; }
+      .chip { @apply inline-flex items-center rounded-full px-2.5 py-1 text-xs font-medium bg-slate-100 text-slate-700 dark:bg-slate-800 dark:text-slate-200; }
+      .badge { @apply inline-flex items-center rounded-full px-2.5 py-1 text-xs font-semibold bg-slate-100 text-slate-700 dark:bg-slate-800 dark:text-slate-200; }
+      .badge-spotlight { @apply bg-rose-600 text-white; }
+      .badge-outstanding { @apply bg-amber-500 text-slate-900; }
+      .link { @apply hover:underline underline-offset-4; }
+    }
+  </style>
+
+  <link rel="stylesheet" href="/assets/notes/notes-ui.css" />
+
+  <script defer src="/assets/notes/notes-app.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/@alpinejs/focus@3.x.x/dist/cdn.min.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+</head>
+
+<body class="bg-slate-50 text-slate-900 dark:bg-slate-950 dark:text-slate-100">
+  <div x-data="NotesApp({ mode: 'category', dataUrl: '/data/notes.json' })" x-init="init()" x-cloak>
+    <header class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 pt-10">
+      <div class="flex items-start justify-between gap-4">
+        <div>
+          <h1 class="text-3xl font-bold tracking-tight" x-text="'Category · ' + (categoryLabel || categoryKey || '')"></h1>
+          <p class="mt-2 text-sm text-slate-600 dark:text-slate-300" x-text="categoryDescription || ''"></p>
+        </div>
+
+        <div class="flex gap-2">
+          <a class="btn" href="/notes/">返回 Notes</a>
+          <button type="button" class="btn" @click="toggleTheme()" aria-label="切换深色/浅色">🌓</button>
+        </div>
+      </div>
+
+      <nav class="mt-6 text-sm text-slate-500 dark:text-slate-400" aria-label="Breadcrumb">
+        <ol class="flex flex-wrap gap-2 items-center">
+          <template x-for="(c, idx) in breadcrumbs" :key="idx">
+            <li class="flex items-center gap-2">
+              <a class="link" :href="c.href" x-text="c.label"></a>
+              <span x-show="idx < breadcrumbs.length - 1" aria-hidden="true">/</span>
+            </li>
+          </template>
+        </ol>
+      </nav>
+
+      <div class="mt-6 card p-5">
+        <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-3">
+          <input class="input" type="search" placeholder="搜索本分类标题/标签/摘要…" x-model="search" @input="onFiltersChanged()" />
+          <select class="select" x-model="filterTag" @change="onFiltersChanged()">
+            <option value="all">全部标签</option>
+            <template x-for="t in allTags" :key="t">
+              <option :value="t" x-text="t"></option>
+            </template>
+          </select>
+          <select class="select" x-model="sort" @change="onFiltersChanged()">
+            <option value="date_desc">日期：新 → 旧</option>
+            <option value="date_asc">日期：旧 → 新</option>
+            <option value="title_asc">标题：A → Z</option>
+            <option value="title_desc">标题：Z → A</option>
+          </select>
+        </div>
+
+        <div class="mt-4 text-sm text-slate-600 dark:text-slate-300">
+          <span x-text="summaryText()"></span>
+        </div>
+      </div>
+    </header>
+
+    <main class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
+      <template x-if="loading">
+        <div class="card p-6 text-slate-600 dark:text-slate-300">加载中…</div>
+      </template>
+
+      <template x-if="!loading && error">
+        <div class="card p-6">
+          <div class="text-rose-600 font-semibold">加载失败</div>
+          <div class="mt-2 text-sm text-slate-700 dark:text-slate-200" x-text="error"></div>
+        </div>
+      </template>
+
+      <template x-if="!loading && !error">
+        <section class="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
+          <template x-for="note in pagedNotes" :key="note.id">
+            <article x-data="NoteCard(note, cardApi(), 'grid')" class="card card-hover overflow-hidden">
+              <div class="relative aspect-[4/3] bg-slate-100 dark:bg-slate-800">
+                <template x-if="thumbUrl">
+                  <img :src="thumbUrl" alt="" class="absolute inset-0 w-full h-full object-cover" loading="lazy" decoding="async" />
+                </template>
+                <template x-if="!thumbUrl">
+                  <div class="absolute inset-0 flex items-center justify-center text-slate-400 dark:text-slate-500 text-sm">No thumbnail</div>
+                </template>
+
+                <div class="absolute right-3 top-3 flex flex-wrap gap-2">
+                  <template x-for="h in (note.highlights || [])" :key="h">
+                    <span class="badge" :class="highlightClass(h)" x-text="h"></span>
+                  </template>
+                </div>
+              </div>
+
+              <div class="p-5">
+                <h3 class="text-base font-semibold leading-snug">
+                  <a class="link" :href="pdfUrl" target="_blank" rel="noopener" x-text="note.title"></a>
+                </h3>
+
+                <div class="mt-2 text-sm text-slate-600 dark:text-slate-300">
+                  <span x-text="note.venue || note.category"></span>
+                  <span class="mx-2 opacity-50">·</span>
+                  <time :datetime="note.date" x-text="formatDate(note.date)"></time>
+                </div>
+
+                <div class="mt-3 flex flex-wrap gap-2">
+                  <template x-for="t in (note.tags || []).slice(0, 6)" :key="t">
+                    <span class="chip" x-text="t"></span>
+                  </template>
+                </div>
+
+                <p class="mt-3 text-sm text-slate-700 dark:text-slate-200 line-clamp-3" x-text="note.abstract || ''"></p>
+
+                <div class="mt-4 flex flex-wrap gap-2">
+                  <a class="btn btn-primary" :href="pdfUrl" target="_blank" rel="noopener">打开 PDF</a>
+                  <button type="button" class="btn" @click="preview()">预览</button>
+                </div>
+              </div>
+            </article>
+          </template>
+        </section>
+      </template>
+
+      <!-- Pagination -->
+      <div class="mt-10 card p-5 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+        <div class="text-sm text-slate-600 dark:text-slate-300">
+          第 <span class="font-semibold" x-text="page"></span> / <span class="font-semibold" x-text="totalPages"></span> 页
+        </div>
+        <div class="flex flex-wrap gap-2">
+          <button type="button" class="btn" @click="goPage(1)" :disabled="page === 1">首页</button>
+          <button type="button" class="btn" @click="goPage(page - 1)" :disabled="page === 1">上一页</button>
+          <button type="button" class="btn" @click="goPage(page + 1)" :disabled="page === totalPages">下一页</button>
+          <button type="button" class="btn" @click="goPage(totalPages)" :disabled="page === totalPages">末页</button>
+        </div>
+      </div>
+    </main>
+
+    <!-- Modal 与 index 页共用（同一套逻辑） -->
+    <div
+      x-show="modal.open"
+      x-transition
+      @keydown.escape.window="closeModal()"
+      class="fixed inset-0 z-50"
+      aria-label="PDF 预览对话框"
+      role="dialog"
+      aria-modal="true"
+    >
+      <div class="absolute inset-0 bg-black/50" @click="closeModal()"></div>
+
+      <div class="absolute inset-0 flex items-center justify-center p-4">
+        <div class="card w-full max-w-5xl max-h-[90vh] overflow-hidden" x-trap.inert.noscroll="modal.open">
+          <div class="flex items-start justify-between gap-4 p-4 border-b border-slate-200/70 dark:border-slate-800">
+            <div class="min-w-0">
+              <div class="text-sm text-slate-500 dark:text-slate-400">PDF Preview</div>
+              <div class="font-semibold truncate" x-text="modal.note ? modal.note.title : ''"></div>
+            </div>
+            <div class="flex flex-wrap gap-2 justify-end">
+              <a class="btn" :href="modal.note ? resolveUrl(modal.note.pdf) : '#'" target="_blank" rel="noopener">新标签打开</a>
+              <button type="button" class="btn" @click="closeModal()">关闭</button>
+            </div>
+          </div>
+
+          <div class="p-4 overflow-auto max-h-[calc(90vh-140px)]">
+            <template x-if="modal.error">
+              <div class="mb-3 text-sm text-rose-600" x-text="modal.error"></div>
+            </template>
+
+            <template x-if="modal.usePdfjs">
+              <div class="flex justify-center">
+                <canvas id="notes-pdf-canvas" class="rounded-lg ring-1 ring-slate-200/70 dark:ring-slate-800"></canvas>
+              </div>
+            </template>
+
+            <template x-if="!modal.usePdfjs && modal.note">
+              <iframe
+                class="w-full h-[75vh] rounded-lg ring-1 ring-slate-200/70 dark:ring-slate-800"
+                :src="resolveUrl(modal.note.pdf)"
+                title="PDF iframe preview"
+              ></iframe>
+            </template>
+          </div>
+
+          <div class="p-4 border-t border-slate-200/70 dark:border-slate-800 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
+            <div class="text-sm text-slate-600 dark:text-slate-300">
+              <template x-if="modal.usePdfjs">
+                <span>
+                  第 <span class="font-semibold" x-text="modal.page"></span> / <span class="font-semibold" x-text="modal.pages"></span> 页
+                </span>
+              </template>
+            </div>
+            <div class="flex flex-wrap gap-2">
+              <button type="button" class="btn" @click="modalPrev()" :disabled="!modal.usePdfjs || modal.page <= 1">上一页</button>
+              <button type="button" class="btn" @click="modalNext()" :disabled="!modal.usePdfjs || modal.page >= modal.pages">下一页</button>
+              <button type="button" class="btn" @click="zoomOut()" :disabled="!modal.usePdfjs">缩小</button>
+              <button type="button" class="btn" @click="zoomIn()" :disabled="!modal.usePdfjs">放大</button>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+  </div>
+</body>
+</html>
