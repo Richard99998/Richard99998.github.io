@@ -1,0 +1,10 @@
+@media (prefers-reduced-motion: reduce) {
+  * { transition: none !important; animation: none !important; scroll-behavior: auto !important; }
+}
+
+/* Print-friendly: 隐藏控制区与 modal（可按需扩展） */
+@media print {
+  header, nav, .btn, select, input, .sr-only { display: none !important; }
+  body { background: #fff !important; color: #000 !important; }
+  .card { box-shadow: none !important; }
+}
