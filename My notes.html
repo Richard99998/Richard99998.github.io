@@ -1,4 +1,4 @@
----
+<!-- ---
 layout: default
 title : My Notes
 navbar_title: My Notes
@@ -78,5 +78,296 @@ Meanwhile, I also host a machine learning seminar in SUSTech from 2025, you can 
 </p>
 And I will be a TA for 2025 fall's Numercial Analysis course taught by <p> <a href="https://faculty.sustech.edu.cn/yangj7/" target="_blank"> Prof.Yang </a>.
 </p> 
-Here is a list for the supplementary materials, including the theoretical part and coding part:
+Here is a list for the supplementary materials, including the theoretical part and coding part: -->
 
+---
+layout: default
+title: My Notes
+navbar_title: My Notes
+body_attr: >-
+  data-spy="scroll" data-target="#navbar-year" data-offset="100"
+---
+
+<style>
+    /* 为了适配 default 布局，稍微调整一下背景和间距 */
+    #notes-container {
+        padding: 20px 0;
+        min-height: 60vh;
+    }
+
+    /* 你的笔记卡片样式 */
+    :root {
+        --card-bg: #ffffff;
+        --text-main: #333;
+        --text-light: #777;
+        --accent: #2980b9; /* 这里的蓝色可以改成你主题的颜色 */
+        --hover-shadow: 0 10px 20px rgba(0,0,0,0.1);
+    }
+
+    /* 切换按钮容器 */
+    .toggle-container {
+        margin: 2rem 0;
+        text-align: center;
+    }
+
+    .toggle-btn {
+        border: 1px solid #ddd;
+        background: transparent;
+        padding: 8px 20px;
+        border-radius: 20px;
+        cursor: pointer;
+        font-size: 0.95rem;
+        color: var(--text-light);
+        margin: 0 5px;
+        transition: all 0.3s ease;
+    }
+
+    .toggle-btn.active {
+        background: var(--accent);
+        color: #fff;
+        border-color: var(--accent);
+        box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    }
+
+    /* 返回按钮 */
+    #back-btn-container {
+        margin-bottom: 20px;
+        display: none; /* 默认隐藏 */
+    }
+
+    .back-btn {
+        background: none;
+        border: none;
+        color: var(--accent);
+        cursor: pointer;
+        font-size: 1rem;
+        display: inline-flex;
+        align-items: center;
+        padding: 0;
+        text-decoration: none;
+    }
+
+    .back-btn:hover {
+        text-decoration: underline;
+    }
+
+    /* 内容网格 */
+    #content-area {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+        gap: 25px;
+    }
+
+    /* 卡片通用样式 */
+    .note-card {
+        background: var(--card-bg);
+        border-radius: 8px;
+        padding: 20px;
+        box-shadow: 0 2px 5px rgba(0,0,0,0.05); /* 稍微淡一点的阴影，适配白色背景 */
+        transition: all 0.3s ease;
+        cursor: pointer;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        height: 140px;
+        border: 1px solid #eee;
+        text-decoration: none; /* 去掉链接下划线 */
+        color: inherit;
+    }
+
+    .note-card:hover {
+        transform: translateY(-5px);
+        box-shadow: var(--hover-shadow);
+        border-color: var(--accent);
+        text-decoration: none;
+    }
+
+    /* 文件夹样式 */
+    .folder-card {
+        border-left: 5px solid var(--accent);
+    }
+
+    .folder-title {
+        font-size: 1.3rem;
+        margin: 0 0 10px 0;
+        font-weight: 600;
+    }
+
+    .folder-info {
+        color: var(--text-light);
+        font-size: 0.9rem;
+    }
+
+    /* 笔记文件样式 */
+    .file-title {
+        font-size: 1.1rem;
+        margin: 0 0 10px 0;
+        font-weight: 500;
+        line-height: 1.4;
+    }
+
+    .file-meta {
+        font-size: 0.85rem;
+        color: var(--text-light);
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    /* 日期分割线 */
+    .date-divider {
+        grid-column: 1 / -1;
+        margin: 30px 0 10px;
+        border-bottom: 1px solid #eee;
+        padding-bottom: 5px;
+        color: var(--text-light);
+        font-size: 1.1rem;
+        font-weight: bold;
+    }
+</style>
+
+<div id="notes-container">
+    
+    <div style="text-align: center; margin-bottom: 20px;">
+        <h1 style="margin-bottom: 10px;">My Notes</h1>
+        <p style="color: #666;">Mathematical Insights & Research</p>
+    </div>
+
+    <div class="toggle-container">
+        <button id="btn-class" class="toggle-btn active" onclick="switchView('class')">By Class</button>
+        <button id="btn-date" class="toggle-btn" onclick="switchView('date')">By Date</button>
+    </div>
+
+    <div id="back-btn-container">
+        <button class="back-btn" onclick="goBackToClasses()">
+            <span>← Back to Folders</span>
+        </button>
+    </div>
+
+    <div id="content-area"></div>
+
+</div>
+
+<script src="notes_data.js"></script>
+
+<script>
+    const contentArea = document.getElementById('content-area');
+    const backBtnContainer = document.getElementById('back-btn-container');
+    const btnClass = document.getElementById('btn-class');
+    const btnDate = document.getElementById('btn-date');
+
+    let currentView = 'class'; 
+
+    // 初始化：确保 DOM 加载后再执行
+    document.addEventListener("DOMContentLoaded", function() {
+        renderClassView();
+    });
+
+    // 切换视图
+    function switchView(view) {
+        currentView = view;
+        
+        if (view === 'class') {
+            btnClass.classList.add('active');
+            btnDate.classList.remove('active');
+            backBtnContainer.style.display = 'none';
+            renderClassView();
+        } else {
+            btnClass.classList.remove('active');
+            btnDate.classList.add('active');
+            backBtnContainer.style.display = 'none';
+            renderDateView();
+        }
+    }
+
+    // 渲染文件夹
+    function renderClassView() {
+        contentArea.innerHTML = '';
+        
+        if (typeof notesData === 'undefined') {
+            contentArea.innerHTML = '<p style="text-align:center; color:red;">Error: notes_data.js not loaded. Please check file name.</p>';
+            return;
+        }
+
+        const categories = [...new Set(notesData.map(item => item.category))];
+        
+        categories.forEach(cat => {
+            const count = notesData.filter(item => item.category === cat).length;
+            
+            const card = document.createElement('div');
+            card.className = 'note-card folder-card';
+            card.onclick = () => openCategory(cat);
+            
+            card.innerHTML = `
+                <h3 class="folder-title">${cat}</h3>
+                <div class="folder-info">
+                    <span>${count} Notes</span>
+                    <span>View ></span>
+                </div>
+            `;
+            contentArea.appendChild(card);
+        });
+    }
+
+    // 渲染分类详情
+    function openCategory(category) {
+        contentArea.innerHTML = '';
+        backBtnContainer.style.display = 'block';
+        
+        const notes = notesData.filter(item => item.category === category);
+        
+        notes.forEach(note => {
+            const card = createNoteCard(note);
+            contentArea.appendChild(card);
+        });
+    }
+
+    // 返回
+    function goBackToClasses() {
+        backBtnContainer.style.display = 'none';
+        renderClassView();
+    }
+
+    // 渲染日期视图
+    function renderDateView() {
+        contentArea.innerHTML = '';
+        const sortedNotes = [...notesData].sort((a, b) => new Date(b.date) - new Date(a.date));
+        
+        let lastMonth = '';
+        
+        sortedNotes.forEach(note => {
+            const currentMonth = note.date.substring(0, 7);
+            
+            if (currentMonth !== lastMonth) {
+                const divider = document.createElement('div');
+                divider.className = 'date-divider';
+                divider.innerText = currentMonth;
+                contentArea.appendChild(divider);
+                lastMonth = currentMonth;
+            }
+            
+            const card = createNoteCard(note);
+            contentArea.appendChild(card);
+        });
+    }
+
+    // 创建卡片 HTML
+    function createNoteCard(note) {
+        // 创建链接元素，这样点击可以新窗口打开
+        const card = document.createElement('a');
+        card.className = 'note-card';
+        card.href = note.file;
+        card.target = "_blank"; // 新标签页打开
+        
+        card.innerHTML = `
+            <div>
+                <h3 class="file-title">${note.title}</h3>
+            </div>
+            <div class="file-meta">
+                <span style="background:#f1f1f1; padding:2px 6px; border-radius:4px;">${note.category}</span>
+                <span>${note.date}</span>
+            </div>
+        `;
+        return card;
+    }
+</script>
