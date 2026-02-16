@@ -1,373 +1,304 @@
-<!-- ---
-layout: default
-title : My Notes
-navbar_title: My Notes
-body_attr: >-
-  data-spy="scroll" data-target="#navbar-year" data-offset="100"
 ---
-
-Here is a list of my notes, some are typed by latex and some are written for convenience:
-
-<h3>PDE and Numerical PDE</h3>
-
-PDE part:
-<p>
-  <a href="CONSERVATION_LAW.pdf" target="_blank">Conservation law</a>, 
-</p>
-<p>
-  <a href="Heat Equation.pdf" target="_blank">Heat equation review</a>, 
-</p>
-<p>
-  <a href="Poisson and Laplace eqation review.pdf" target="_blank">Poisson and Laplace eqation review</a>, 
-</p>
-
-<p>
-  <a href="Wave_Equation.pdf" target="_blank">Wave Equation Review</a>, 
-
-</p>
-This only covers about 60 percent of my past course PDE(H). For more detailed materials, please refer to  <a href="https://liyingli-math.github.io/teaching/mat336-2024f/" target="_blank">PDE(H)</a>
-Thank <a href="https://liyingli-math.github.io/" target="_blank">Prof.Liying Li</a> for the fantastic teaching he brought. I really benefit a lot from this course
-
-
-<h3>Optimization</h3>
-
-Here are some basic notes
-<p>
-  <a href="LP Strong Duality.pdf" target="_blank"> LP Strong Duality via Farkas </a>, 
-  
-</p>
-<p>
-  <a href="Slater condition and LP optimal value.pdf" target="_blank"> Slater condition and LP optimal value</a>, 
-  
-</p>
-<p>
-  <a href="vertex cover and matching for bipartite graph.pdf" target="_blank">vertex cover and matching for bipartite graphs </a>, 
-  
-</p>
-
-<p>
-  <a href="Constraint qualification and KKT_up.pdf" target="_blank">Constraint qualification and KKT (For more ref, just search constraint qualification) </a>, 
-  
-</p>
-<p>
-  <a href="none.pdf" target="_blank">Some usual knowledge about convex optimization</a>, 
- 
-</p>
-
-<p>
-  <a href="none.pdf" target="_blank">Talking about the non-expansive operators</a>, 
-
-</p>
-
-<p>
-  <a href="none.pdf" target="_blank"> Some useful algorithms </a>, 
-  
-</p>
-
-
-<h3>Other Interesting Topics</h3>
-
-<p>
-  <a href="Coupon problem.pdf" target="_blank"> Simple Coupon problem [Thank Shelton] </a>, 
-
-</p>
-
-Meanwhile, I also host a machine learning seminar in SUSTech from 2025, you can refer to:<p>
-  <a href="Machine Learning Seminar.html" target="_blank"> Machine learning seminar [2025] </a>, 
-
-</p>
-And I will be a TA for 2025 fall's Numercial Analysis course taught by <p> <a href="https://faculty.sustech.edu.cn/yangj7/" target="_blank"> Prof.Yang </a>.
-</p> 
-Here is a list for the supplementary materials, including the theoretical part and coding part: -->
-
-<!-- ---
 layout: default
 title: My Notes
 navbar_title: My Notes
 body_attr: >-
   data-spy="scroll" data-target="#navbar-year" data-offset="100"
---- -->
+---
 
 <style>
-    /* 为了适配 default 布局，稍微调整一下背景和间距 */
-    #notes-container {
-        padding: 20px 0;
-        min-height: 60vh;
+    /* 1. 背景图片设置 */
+    body {
+        /* 请把下面的链接换成你自己的图片URL，或者放在 assets/img/bg.jpg */
+        background-image: url('https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?q=80&w=1920&auto=format&fit=crop');
+        background-size: cover;
+        background-attachment: fixed;
+        background-position: center;
     }
 
-    /* 你的笔记卡片样式 */
-    :root {
-        --card-bg: #ffffff;
-        --text-main: #333;
-        --text-light: #777;
-        --accent: #2980b9; /* 这里的蓝色可以改成你主题的颜色 */
-        --hover-shadow: 0 10px 20px rgba(0,0,0,0.1);
+    /* 为了让文字在背景上看得清，给容器加个半透明白底 */
+    #notes-main-container {
+        background: rgba(255, 255, 255, 0.92); /* 0.92 是透明度 */
+        border-radius: 12px;
+        padding: 30px;
+        margin: 30px auto;
+        max-width: 1100px;
+        min-height: 80vh;
+        box-shadow: 0 10px 30px rgba(0,0,0,0.1);
     }
 
-    /* 切换按钮容器 */
-    .toggle-container {
-        margin: 2rem 0;
-        text-align: center;
+    /* 2. 搜索框样式 */
+    .search-wrapper {
+        position: relative;
+        max-width: 500px;
+        margin: 0 auto 30px;
     }
 
-    .toggle-btn {
-        border: 1px solid #ddd;
-        background: transparent;
-        padding: 8px 20px;
-        border-radius: 20px;
-        cursor: pointer;
-        font-size: 0.95rem;
-        color: var(--text-light);
-        margin: 0 5px;
-        transition: all 0.3s ease;
+    #search-input {
+        width: 100%;
+        padding: 12px 20px;
+        border: 2px solid #eee;
+        border-radius: 30px;
+        font-size: 1rem;
+        outline: none;
+        transition: border-color 0.3s;
     }
 
-    .toggle-btn.active {
-        background: var(--accent);
-        color: #fff;
-        border-color: var(--accent);
-        box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    #search-input:focus {
+        border-color: #2980b9;
     }
 
-    /* 返回按钮 */
-    #back-btn-container {
+    /* 3. 面包屑导航 (Home > Optimization > Convex) */
+    .breadcrumb {
+        display: flex;
+        gap: 8px;
+        font-size: 1rem;
+        color: #666;
         margin-bottom: 20px;
+        align-items: center;
+    }
+
+    .breadcrumb span {
+        cursor: pointer;
+        color: #2980b9;
+    }
+    
+    .breadcrumb span:hover { text-decoration: underline; }
+    .breadcrumb span.current { color: #999; cursor: default; text-decoration: none; }
+    .breadcrumb-separator { color: #ccc; }
+
+    /* 4. 文件夹介绍区域 */
+    #folder-intro {
+        background: #f0f7fb;
+        border-left: 4px solid #2980b9;
+        padding: 15px 20px;
+        margin-bottom: 30px;
+        border-radius: 0 8px 8px 0;
+        color: #444;
+        font-size: 0.95rem;
         display: none; /* 默认隐藏 */
     }
 
-    .back-btn {
-        background: none;
-        border: none;
-        color: var(--accent);
-        cursor: pointer;
-        font-size: 1rem;
-        display: inline-flex;
-        align-items: center;
-        padding: 0;
-        text-decoration: none;
-    }
-
-    .back-btn:hover {
-        text-decoration: underline;
-    }
-
-    /* 内容网格 */
-    #content-area {
+    /* 网格布局 */
+    #content-grid {
         display: grid;
-        grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-        gap: 25px;
+        grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+        gap: 20px;
     }
 
-    /* 卡片通用样式 */
-    .note-card {
-        background: var(--card-bg);
-        border-radius: 8px;
+    /* 卡片样式 */
+    .item-card {
+        background: #fff;
+        border-radius: 10px;
         padding: 20px;
-        box-shadow: 0 2px 5px rgba(0,0,0,0.05); /* 稍微淡一点的阴影，适配白色背景 */
-        transition: all 0.3s ease;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+        border: 1px solid #eee;
+        transition: transform 0.2s, box-shadow 0.2s;
         cursor: pointer;
         display: flex;
         flex-direction: column;
         justify-content: space-between;
         height: 140px;
-        border: 1px solid #eee;
-        text-decoration: none; /* 去掉链接下划线 */
-        color: inherit;
+        position: relative;
     }
 
-    .note-card:hover {
-        transform: translateY(-5px);
-        box-shadow: var(--hover-shadow);
-        border-color: var(--accent);
-        text-decoration: none;
+    .item-card:hover {
+        transform: translateY(-4px);
+        box-shadow: 0 8px 16px rgba(0,0,0,0.1);
     }
 
-    /* 文件夹样式 */
-    .folder-card {
-        border-left: 5px solid var(--accent);
-    }
-
-    .folder-title {
-        font-size: 1.3rem;
-        margin: 0 0 10px 0;
-        font-weight: 600;
-    }
-
-    .folder-info {
-        color: var(--text-light);
-        font-size: 0.9rem;
-    }
-
-    /* 笔记文件样式 */
-    .file-title {
-        font-size: 1.1rem;
-        margin: 0 0 10px 0;
-        font-weight: 500;
-        line-height: 1.4;
-    }
-
-    .file-meta {
-        font-size: 0.85rem;
-        color: var(--text-light);
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-    }
-
-    /* 日期分割线 */
-    .date-divider {
-        grid-column: 1 / -1;
-        margin: 30px 0 10px;
-        border-bottom: 1px solid #eee;
-        padding-bottom: 5px;
-        color: var(--text-light);
-        font-size: 1.1rem;
-        font-weight: bold;
-    }
+    /* 文件夹图标样式 */
+    .type-folder { border-top: 4px solid #f1c40f; }
+    .folder-icon { font-size: 2rem; margin-bottom: 10px; color: #f1c40f; }
+    
+    /* 文件图标样式 */
+    .type-file { border-top: 4px solid #2980b9; }
+    
+    .card-title { font-weight: 600; font-size: 1.1rem; margin-bottom: 5px; color: #333; }
+    .card-meta { font-size: 0.8rem; color: #888; margin-top: auto; }
 </style>
 
-<div id="notes-container">
+<div id="notes-main-container">
     
-    <div style="text-align: center; margin-bottom: 20px;">
-        <h1 style="margin-bottom: 10px;">My Notes</h1>
-        <p style="color: #666;">Mathematical Insights & Research</p>
+    <h1 style="text-align:center; margin-bottom:10px;">My Notes</h1>
+    
+    <div class="search-wrapper">
+        <input type="text" id="search-input" placeholder="Search notes (e.g., 'convex', 'pde')..." oninput="handleSearch()">
     </div>
 
-    <div class="toggle-container">
-        <button id="btn-class" class="toggle-btn active" onclick="switchView('class')">By Class</button>
-        <button id="btn-date" class="toggle-btn" onclick="switchView('date')">By Date</button>
-    </div>
+    <div id="breadcrumb" class="breadcrumb">
+        </div>
 
-    <div id="back-btn-container">
-        <button class="back-btn" onclick="goBackToClasses()">
-            <span>← Back to Folders</span>
-        </button>
-    </div>
+    <div id="folder-intro"></div>
 
-    <div id="content-area"></div>
+    <div id="content-grid"></div>
 
 </div>
 
 <script src="notes_data.js"></script>
 
 <script>
-    const contentArea = document.getElementById('content-area');
-    const backBtnContainer = document.getElementById('back-btn-container');
-    const btnClass = document.getElementById('btn-class');
-    const btnDate = document.getElementById('btn-date');
+    // 状态变量
+    let currentPath = []; // 当前所在的路径，例如 ['Optimization', 'Convex']
+    let searchQuery = "";
 
-    let currentView = 'class'; 
+    const grid = document.getElementById('content-grid');
+    const breadcrumbEl = document.getElementById('breadcrumb');
+    const introEl = document.getElementById('folder-intro');
 
-    // 初始化：确保 DOM 加载后再执行
-    document.addEventListener("DOMContentLoaded", function() {
-        renderClassView();
+    // 初始化
+    document.addEventListener("DOMContentLoaded", () => {
+        render();
     });
 
-    // 切换视图
-    function switchView(view) {
-        currentView = view;
-        
-        if (view === 'class') {
-            btnClass.classList.add('active');
-            btnDate.classList.remove('active');
-            backBtnContainer.style.display = 'none';
-            renderClassView();
-        } else {
-            btnClass.classList.remove('active');
-            btnDate.classList.add('active');
-            backBtnContainer.style.display = 'none';
-            renderDateView();
-        }
+    // 搜索处理
+    function handleSearch() {
+        searchQuery = document.getElementById('search-input').value.toLowerCase();
+        render();
     }
 
-    // 渲染文件夹
-    function renderClassView() {
-        contentArea.innerHTML = '';
-        
-        if (typeof notesData === 'undefined') {
-            contentArea.innerHTML = '<p style="text-align:center; color:red;">Error: notes_data.js not loaded. Please check file name.</p>';
+    // 导航到指定路径
+    function navigateTo(pathArray) {
+        currentPath = pathArray;
+        document.getElementById('search-input').value = ""; // 进文件夹时清空搜索
+        searchQuery = "";
+        render();
+    }
+
+    // 核心渲染函数
+    function render() {
+        grid.innerHTML = '';
+        renderBreadcrumbs();
+        renderIntro();
+
+        // 1. 如果有搜索词，显示所有匹配的文件（忽略文件夹结构）
+        if (searchQuery) {
+            const matches = notesData.filter(note => 
+                note.title.toLowerCase().includes(searchQuery) || 
+                note.category.toLowerCase().includes(searchQuery)
+            );
+            
+            if (matches.length === 0) {
+                grid.innerHTML = '<p style="grid-column:1/-1; text-align:center; color:#999;">No notes found matching your search.</p>';
+                return;
+            }
+
+            matches.forEach(note => createCard(note, 'file'));
             return;
         }
 
-        const categories = [...new Set(notesData.map(item => item.category))];
+        // 2. 如果没有搜索，按层级显示
+        const currentPathStr = currentPath.join('/');
+        const foldersToShow = new Set();
+        const filesToShow = [];
+
+        notesData.forEach(note => {
+            // 检查笔记是否属于当前路径
+            if (note.category === currentPathStr) {
+                // 精确匹配：是当前文件夹下的文件
+                filesToShow.push(note);
+            } else if (note.category.startsWith(currentPathStr + (currentPathStr ? '/' : ''))) {
+                // 前缀匹配：是子文件夹里的内容
+                // 提取下一级文件夹名称
+                const remaining = note.category.substring(currentPathStr.length + (currentPathStr ? 1 : 0));
+                const nextFolder = remaining.split('/')[0];
+                if (nextFolder) {
+                    foldersToShow.add(nextFolder);
+                }
+            } else if (currentPath.length === 0 && !note.category.includes('/')) {
+                // 根目录特殊处理：直接放在根目录的文件
+                // 现在的逻辑假设所有根目录的都叫 "Category"，所以这行通常用来处理没有 / 的category
+                if (note.category.indexOf('/') === -1) {
+                   // 实际上在你的数据结构里，顶级也是文件夹（如 Optimization），所以这里通常是提取 Optimization
+                   foldersToShow.add(note.category.split('/')[0]);
+                }
+            } else if (currentPath.length === 0) {
+                // 根目录下，提取所有顶层文件夹
+                foldersToShow.add(note.category.split('/')[0]);
+            }
+        });
+
+        // 渲染文件夹卡片
+        Array.from(foldersToShow).sort().forEach(folderName => {
+            createCard({ title: folderName }, 'folder');
+        });
+
+        // 渲染文件卡片
+        filesToShow.forEach(note => {
+            createCard(note, 'file');
+        });
+
+        if (filesToShow.length === 0 && foldersToShow.size === 0) {
+             grid.innerHTML = '<p style="grid-column:1/-1; text-align:center; color:#999;">This folder is empty.</p>';
+        }
+    }
+
+    // 渲染面包屑
+    function renderBreadcrumbs() {
+        let html = `<span onclick="navigateTo([])">Home</span>`;
         
-        categories.forEach(cat => {
-            const count = notesData.filter(item => item.category === cat).length;
+        let pathAccumulator = [];
+        currentPath.forEach((folder, index) => {
+            pathAccumulator.push(folder);
+            // 这里的 [...pathAccumulator] 是为了闭包保存当前状态
+            const pathCopy = [...pathAccumulator]; 
+            html += ` <span class="breadcrumb-separator">/</span> `;
             
-            const card = document.createElement('div');
-            card.className = 'note-card folder-card';
-            card.onclick = () => openCategory(cat);
-            
-            card.innerHTML = `
-                <h3 class="folder-title">${cat}</h3>
-                <div class="folder-info">
-                    <span>${count} Notes</span>
-                    <span>View ></span>
+            if (index === currentPath.length - 1) {
+                html += `<span class="current">${folder}</span>`;
+            } else {
+                // 哪怕是简单的字符串拼接，也需要处理点击事件，这里用 dataset 比较方便，或者直接重新渲染
+                // 为了简单，我们重新构建 onclick
+                html += `<span onclick='navigateTo(${JSON.stringify(pathCopy)})'>${folder}</span>`;
+            }
+        });
+        
+        breadcrumbEl.innerHTML = html;
+    }
+
+    // 渲染介绍文字
+    function renderIntro() {
+        const pathStr = currentPath.join('/');
+        // 从 folderInfo 里读取介绍，如果没有则不显示
+        if (pathStr && folderInfo && folderInfo[pathStr]) {
+            introEl.innerHTML = `<strong>About ${currentPath[currentPath.length-1]}:</strong> ${folderInfo[pathStr]}`;
+            introEl.style.display = 'block';
+        } else {
+            introEl.style.display = 'none';
+        }
+    }
+
+    // 创建卡片 DOM
+    function createCard(item, type) {
+        const div = document.createElement('div');
+        div.className = `item-card type-${type}`;
+        
+        if (type === 'folder') {
+            div.innerHTML = `
+                <div>
+                    <div class="folder-icon">📁</div>
+                    <div class="card-title">${item.title}</div>
+                </div>
+                <div class="card-meta">Folder</div>
+            `;
+            div.onclick = () => {
+                const newPath = [...currentPath, item.title];
+                navigateTo(newPath);
+            };
+        } else {
+            // 文件
+            div.innerHTML = `
+                <div>
+                    <div style="color:#2980b9; margin-bottom:10px; font-size:1.5rem">📄</div>
+                    <div class="card-title">${item.title}</div>
+                </div>
+                <div class="card-meta">
+                    <span>${item.date}</span>
                 </div>
             `;
-            contentArea.appendChild(card);
-        });
-    }
-
-    // 渲染分类详情
-    function openCategory(category) {
-        contentArea.innerHTML = '';
-        backBtnContainer.style.display = 'block';
+            div.onclick = () => window.open(item.file, '_blank');
+        }
         
-        const notes = notesData.filter(item => item.category === category);
-        
-        notes.forEach(note => {
-            const card = createNoteCard(note);
-            contentArea.appendChild(card);
-        });
-    }
-
-    // 返回
-    function goBackToClasses() {
-        backBtnContainer.style.display = 'none';
-        renderClassView();
-    }
-
-    // 渲染日期视图
-    function renderDateView() {
-        contentArea.innerHTML = '';
-        const sortedNotes = [...notesData].sort((a, b) => new Date(b.date) - new Date(a.date));
-        
-        let lastMonth = '';
-        
-        sortedNotes.forEach(note => {
-            const currentMonth = note.date.substring(0, 7);
-            
-            if (currentMonth !== lastMonth) {
-                const divider = document.createElement('div');
-                divider.className = 'date-divider';
-                divider.innerText = currentMonth;
-                contentArea.appendChild(divider);
-                lastMonth = currentMonth;
-            }
-            
-            const card = createNoteCard(note);
-            contentArea.appendChild(card);
-        });
-    }
-
-    // 创建卡片 HTML
-    function createNoteCard(note) {
-        // 创建链接元素，这样点击可以新窗口打开
-        const card = document.createElement('a');
-        card.className = 'note-card';
-        card.href = note.file;
-        card.target = "_blank"; // 新标签页打开
-        
-        card.innerHTML = `
-            <div>
-                <h3 class="file-title">${note.title}</h3>
-            </div>
-            <div class="file-meta">
-                <span style="background:#f1f1f1; padding:2px 6px; border-radius:4px;">${note.category}</span>
-                <span>${note.date}</span>
-            </div>
-        `;
-        return card;
+        grid.appendChild(div);
     }
 </script>
