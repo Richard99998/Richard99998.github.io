@@ -37,3 +37,9 @@ plugins:
 collections:
   - publications
   - news
+
+  # Collection Initialization for Academic Notes
+collections:
+  notes:
+    output: true
+    permalink: /notes/:class/:title/
