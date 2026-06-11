@@ -53,6 +53,10 @@ education:
   logo: /assets/images/badges/校徽.png
   position: Bachelor in Mathematics
   date: Sep. 2022 - present
+- name: The Chinese University of Hong Kong (ShenZhen)
+  logo: /assets/images/badges/香港中文大学（深圳）-logo-2048px.png
+  position: PhD in Data Science
+  date: Sep. 2026 - present 
 
 # experience:
 # - name: Peking University
