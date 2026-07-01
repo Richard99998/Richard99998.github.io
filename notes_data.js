@@ -35,6 +35,12 @@ const notesData = [
         date: "2024-01-01",
         file: "Intro_Opt.pdf"
     },
+    {
+        title: "Box LP IPM Convergence Proof",
+        category: "Optimization",
+        date: "2026-07-01",
+        file: "Box_LP_IPM_Convergence_Proof_English_Accessible.pdf"
+    },
 
     // --- PDE 及其子文件夹 ---
     {
