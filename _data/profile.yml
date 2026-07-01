@@ -20,9 +20,12 @@ twitter: your_twitter_id
 
 short_bio: >-
   <p>
-    I am a final-year undergraduate student at 
+   I will be commencing my postgraduate studies at the <a href="https://sds.cuhk.edu.cn/en" target="_blank" rel="noopener noreferrer">School of Data Science</a> 
+   at The Chinese University of Hong Kong, Shenzhen, an institution dedicated to cutting-edge research and innovation in data science.
+    Previously, I was an undergraduate student at 
     <a href="https://math.sustech.edu.cn/?lang=en" target="_blank" rel="noopener noreferrer">Southern University of Science and Technology</a> (SUSTech) in Shenzhen, China. 
-    I am also a member of the Fields Honor Class, an elite program for mathematics undergraduates.
+    I was also a member of the Fields Honor Class, an elite program for mathematics undergraduates which is led by the Fields Award winner Efim Zelmanov. During my undergraduate career,
+    I was very fortunate to meet <a href="https://www.mhchen.com/index.html" target="_blank" rel="noopener noreferrer">Prof. Minghua Chen</a>, <a href="https://scholar.google.com/citations?user=QNOTvgkAAAAJ&hl=en&oi=ao" target="_blank" rel="noopener noreferrer">Prof. Jiang Yang</a>,  <a href="https://www.sustech.edu.cn/zh/faculties/zhangzhen.html" target="_blank" rel="noopener noreferrer">Prof. Zhen Zhang</a>, and <a href="https://scholar.google.com/citations?user=VWYT_7YAAAAJ&hl=en&oi=ao" target="_blank" rel="noopener noreferrer">Prof. Jin Zhang</a>, who help me a lot in the study of applied mathematics.
   </p>
   
   <p>
@@ -42,7 +45,7 @@ short_bio: >-
   </ol>
   
   <p>
-    I am very fortunate to work with <a href="https://emliang.github.io/" target="_blank" rel="noopener noreferrer">Enming Liang</a> and be supervised by <a href="https://www.mhchen.com/index.html" target="_blank" rel="noopener noreferrer">Minghua Chen</a>.
+    I am very fortunate to work with <a href="https://emliang.github.io/" target="_blank" rel="noopener noreferrer">Enming Liang</a> and be supervised by <a href="https://www.mhchen.com/index.html" target="_blank" rel="noopener noreferrer">Prof. Minghua Chen</a>.
   </p>
 portrait_url: /assets/images/photos/Rui_1.jpg
 portrait_caption: >-
@@ -51,8 +54,8 @@ portrait_caption: >-
 education:
 - name: Southern University of Science and Technology
   logo: /assets/images/badges/校徽.png
-  position: Bachelor in Mathematics
-  date: Sep. 2022 - present
+  position: Bachelor of Science with Honours, Magna Cum Laude 
+  date: Sep. 2022 - June. 2026
 - name: The Chinese University of Hong Kong (ShenZhen)
   logo: /assets/images/badges/香港中文大学（深圳）-logo-2048px.png
   position: PhD in Data Science
@@ -66,10 +69,12 @@ education:
 
 
 awards:
-- name: Outstanding Student of SUSTECH
-  date: 2025
-- name: Outstanding Student of SUSTECH
-  date: 2024
-- name: Outstanding Student of SUSTECH
-  date: 2023
+- name: Outstanding Student, SUSTech
+  date: 2023-2025
+- name: Outstanding Graduation Thesis Award (Top2), SUSTech
+  date: 2026
+- name: Honorable Mention, Top 10 Graduates, College of Science, SUSTech
+  date: 2026
+- name: Presidential Fellowship, CUHKSZ
+  date: 2026
 
